@@ -6,6 +6,7 @@ import { MessageModule } from './modules/message/message.module';
 import { RoomModule } from './modules/room/room.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from '~/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         uri: configService.get<string>('MONGODB_URI'),
       }),
       inject: [ConfigService],
-    })
+    }),
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

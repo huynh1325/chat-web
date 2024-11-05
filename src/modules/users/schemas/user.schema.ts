@@ -10,7 +10,28 @@ export class User {
   name: string;
 
   @Prop()
-  age: number;
+  email: string;
+
+  @Prop()
+  password: string;
+
+  @Prop()
+  address: string;
+
+  @Prop()
+  image: string;
+
+  @Prop({ default: "Users"})
+  role: string;
+
+  @Prop({ default: false })
+  isActive: boolean;
+
+  @Prop()
+  codeId: string;
+
+  @Prop()
+  codeExpired: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
