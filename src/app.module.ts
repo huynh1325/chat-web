@@ -7,6 +7,8 @@ import { RoomModule } from './modules/room/room.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '~/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/passport/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -26,6 +28,12 @@ import { AuthModule } from '~/auth/auth.module';
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+      {
+        provide: APP_GUARD,
+        useClass: JwtAuthGuard,
+      },
+  ],
 })
 export class AppModule {}
