@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { loginApi } from "~/util/api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "~/component/Context/auth.context";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -14,25 +15,37 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isEmail = (email) => {
+    const regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+    return regEmail.test(email) ? true : false;
+  };
+
   const handleLogin = async () => {
     // setObjValidInput(defaultObjValidInput);
 
     if (!email) {
       // setObjValidInput({ ...defaultObjValidInput, isValidValueLogin: false });
-      // toast.error('Plz enter');
+      toast.error("Hãy nhập email");
+
       return;
     }
+
+    if (!isEmail(email)) {
+      toast.error("Email ko đúng định dạng");
+      return;
+    }
+
     if (!password) {
       // setObjValidInput({ ...defaultObjValidInput, isValidPassword: false });
-      // toast.error('Plz enter pw');
+      toast.error("Hãy nhập password");
       return;
     }
 
     let res = await loginApi(email, password);
 
-    if (res && res.EC === 0) {
-      console.log("success");
+    if (res && +res.EC === 0) {
       localStorage.setItem("access_token", res.access_token);
+      toast.success("Đăng nhập thành công");
       setAuth({
         isAuthenticated: true,
         user: {
@@ -41,14 +54,12 @@ const LoginPage = () => {
         },
       });
       navigate("/");
-    } else {
-      console.log("error");
     }
 
-    // if (response && +response.EC !== 0) {
-    //     // error
-    //     toast.error(response.EM);
-    // }
+    if (res && +res.EC !== 0) {
+      // error
+      toast.error(res.EM);
+    }
   };
 
   return (
@@ -81,9 +92,8 @@ const LoginPage = () => {
             />
           </div>
           <div className={cx("password-action")}>
-            <div className={cx("remember-password")}>
-              <input type="checkbox" />
-              <span>Nhớ mật khẩu</span>
+            <div className={cx("back-home")}>
+              <a href="/">Quay lại trang chủ</a>
             </div>
             <a href="/" className={cx("forgot-password")}>
               Quên mật khẩu

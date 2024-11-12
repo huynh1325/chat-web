@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./component/GlobalStyles";
+import { AuthWrapper } from "./component/Context/auth.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
-      <App />
+      <AuthWrapper>
+        <App />
+      </AuthWrapper>
     </GlobalStyles>
   </React.StrictMode>
 );
