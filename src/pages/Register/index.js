@@ -21,9 +21,7 @@ const RegisterPage = () => {
 
   const handleRegister = async () => {
     if (!email) {
-      // setObjValidInput({ ...defaultObjValidInput, isValidValueLogin: false });
       toast.error("Hãy nhập email");
-
       return;
     }
 
@@ -32,18 +30,16 @@ const RegisterPage = () => {
       return;
     }
 
-    if (!name) {
-      // setObjValidInput({ ...defaultObjValidInput, isValidValueLogin: false });
-      toast.error("Hãy nhập name");
-
-      return;
-    }
+    // if (!name) {
+    //   toast.error("Hãy nhập name");
+    //   return;
+    // }
 
     if (!password) {
-      // setObjValidInput({ ...defaultObjValidInput, isValidPassword: false });
       toast.error("Hãy nhập password");
       return;
     }
+
     const res = await createUserApi(email, password, name);
     console.log("res: ", res);
 
@@ -58,6 +54,7 @@ const RegisterPage = () => {
       }
     }
   };
+
   return (
     <div className={cx("login")}>
       <div className={cx("wrapper")}>
@@ -111,7 +108,7 @@ const RegisterPage = () => {
             Đăng ký
           </button>
           <div className={cx("register-text")}>
-            Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản</a> ngay
+            Đã có tài khoản? <a href="/login">Đăng nhập!</a>
           </div>
         </div>
       </div>
