@@ -21,29 +21,22 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
-    // setObjValidInput(defaultObjValidInput);
-
     if (!email) {
-      // setObjValidInput({ ...defaultObjValidInput, isValidValueLogin: false });
       toast.error("Hãy nhập email");
-
       return;
     }
-
     if (!isEmail(email)) {
       toast.error("Email ko đúng định dạng");
       return;
     }
-
     if (!password) {
-      // setObjValidInput({ ...defaultObjValidInput, isValidPassword: false });
       toast.error("Hãy nhập password");
       return;
     }
-
     let res = await loginApi(email, password);
+    console.log(res);
 
-    if (res && +res.EC === 0) {
+    if (res && res.access_token) {
       localStorage.setItem("access_token", res.access_token);
       toast.success("Đăng nhập thành công");
       setAuth({
@@ -56,9 +49,9 @@ const LoginPage = () => {
       navigate("/");
     }
 
-    if (res && +res.EC !== 0) {
+    if (res && res.statusCode === 401) {
       // error
-      toast.error(res.EM);
+      toast.error(res.message);
     }
   };
 
