@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./register.module.scss";
 import classNames from "classnames/bind";
-import { createUserApi } from "~/util/api";
+import { sendRequest } from "~/util/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -40,18 +40,21 @@ const RegisterPage = () => {
       return;
     }
 
-    const res = await createUserApi(email, password, name);
-    console.log("res: ", res);
+    const res = await sendRequest({
+      // url: `${process.env.BACKEND_URL}/api/v1/auth/register`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/register`,
+      method: "POST",
+      body: {
+        email,
+        password,
+        name,
+      },
+    });
 
-    if (res && +res.EC === 0) {
-      toast.success("Đăng ký thành công");
-      navigate("/");
+    if (res && res.statusCode === 201) {
+      navigate(`/verify/${res?.data._id}`);
     } else {
-      if (res && +res.EC === 1) {
-        toast.error("Email đã tồn tại");
-      } else {
-        toast.error("Đăng ký thất bại");
-      }
+      toast.error("error.sth");
     }
   };
 
@@ -94,15 +97,6 @@ const RegisterPage = () => {
                 setName(event.target.value);
               }}
             />
-          </div>
-          <div className={cx("password-action")}>
-            <div className={cx("remember-password")}>
-              <input type="checkbox" />
-              <span>Nhớ mật khẩu</span>
-            </div>
-            <a href="/" className={cx("forgot-password")}>
-              Quên mật khẩu
-            </a>
           </div>
           <button className={cx("login-btn")} onClick={handleRegister}>
             Đăng ký

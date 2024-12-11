@@ -36,7 +36,7 @@ const LoginPage = () => {
     let res = await loginApi(email, password);
     console.log(res);
 
-    if (res && res.access_token) {
+    if (res && res.statusCode === 201) {
       localStorage.setItem("access_token", res.access_token);
       toast.success("Đăng nhập thành công");
       setAuth({
@@ -47,11 +47,13 @@ const LoginPage = () => {
         },
       });
       navigate("/");
-    }
-
-    if (res && res.statusCode === 401) {
+    } else if (res && res.statusCode === 401) {
       // error
       toast.error(res.message);
+    } else if (res && res.statusCode === 400) {
+      toast.error(res.message);
+    } else {
+      toast.error("Internal server error");
     }
   };
 
