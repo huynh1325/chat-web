@@ -30,18 +30,12 @@ const RegisterPage = () => {
       return;
     }
 
-    // if (!name) {
-    //   toast.error("Hãy nhập name");
-    //   return;
-    // }
-
     if (!password) {
       toast.error("Hãy nhập password");
       return;
     }
 
     const res = await sendRequest({
-      // url: `${process.env.BACKEND_URL}/api/v1/auth/register`,
       url: `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/register`,
       method: "POST",
       body: {

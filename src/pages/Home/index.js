@@ -1,5 +1,9 @@
 const HomePage = () => {
-  return <div>home page</div>;
+  return (
+    <div>
+      <button>Đăng xuất</button>
+    </div>
+  );
 };
 
 export default HomePage;
