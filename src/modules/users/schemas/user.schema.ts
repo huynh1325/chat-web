@@ -1,4 +1,3 @@
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
@@ -21,7 +20,7 @@ export class User {
   @Prop()
   image: string;
 
-  @Prop({ default: "Users"})
+  @Prop({ default: 'Users' })
   role: string;
 
   @Prop({ default: false })
@@ -31,7 +30,7 @@ export class User {
   codeId: string;
 
   @Prop()
-  codeExpired: string;
+  codeExpired: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -107,8 +107,7 @@ export class UsersService {
       password: hashPassword,
       isActive: false,
       codeId: codeId,
-      // codeExpired: dayjs().add(30, 'seconds')
-      codeExpired: dayjs().add(60, 'minutes'),
+      codeExpired: dayjs().add(5, 'minutes'),
     });
 
     this.mailerService.sendMail({
@@ -131,11 +130,14 @@ export class UsersService {
       _id: data._id,
       codeId: data.code,
     });
+    console.log(user);
     if (!user) {
       throw new BadRequestException('Mã code không hợp lệ hoặc đã hết hạn');
     }
 
     const isBeforeCheck = dayjs().isBefore(user.codeExpired);
+
+    console.log(isBeforeCheck);
 
     if (isBeforeCheck) {
       await this.userModel.updateOne(
@@ -148,5 +150,34 @@ export class UsersService {
     } else {
       throw new BadRequestException('Mã code không hợp lệ hoặc đã hết hạn');
     }
+  }
+
+  async retryActive(email: string) {
+    const user = await this.userModel.findOne({ email });
+
+    if (!user) {
+      throw new BadRequestException('Tài khoản không tồn tại');
+    }
+    if (user.isActive) {
+      throw new BadRequestException('Tài khoản đã được kích hoạt');
+    }
+
+    const codeId = uuidv4();
+
+    await user.updateOne({
+      codeId: codeId,
+      codeExpired: dayjs().add(5, 'minutes'),
+    });
+
+    this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Activate your account',
+      template: 'register',
+      context: {
+        name: user?.name ?? user.email,
+        activationCode: codeId,
+      },
+    });
+    return { _id: user._id };
   }
 }
