@@ -4,14 +4,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./component/GlobalStyles";
 import { AuthWrapper } from "./component/Context/auth.context";
+import { socket, WebsocketProvider } from '~/component/Socket/WebsocketContext'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
-      <AuthWrapper>
-        <App />
-      </AuthWrapper>
+      <WebsocketProvider value={socket}>
+        <AuthWrapper>
+          <App />
+        </AuthWrapper>
+      </WebsocketProvider>
     </GlobalStyles>
   </React.StrictMode>
 );

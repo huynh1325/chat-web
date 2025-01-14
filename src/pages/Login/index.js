@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const [modalVerify, setModalVerify] = useState(false);
 
   // const openModal = () => {
@@ -60,8 +60,8 @@ const LoginPage = () => {
       setAuth({
         isAuthenticated: true,
         user: {
-          email: res?.user?.email ?? "",
-          name: res?.user?.name ?? "",
+          email: res?.data?.user?.email ?? "",
+          name: res?.data?.user?.name ?? "",
         },
       });
       navigate("/");
