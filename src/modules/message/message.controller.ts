@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, OnModuleInit } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
@@ -6,6 +6,21 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 @Controller('message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
+  // constructor(private readonly messageGateway: MessageGateway) {}
+
+
+  // @Post()
+  // sendMessage(@Body() body: { content: string; sender: string }) {
+  //   const message = {
+  //     content: body.content,
+  //     sender: body.sender,
+  //     createdAt: new Date(),
+  //   };
+
+  //   this.messageGateway.sendMessage(message);
+
+  //   return message;
+  // }
 
   @Post()
   create(@Body() createMessageDto: CreateMessageDto) {
